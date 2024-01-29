@@ -1,0 +1,45 @@
+ASSIGEMENT 3
+-- 1) Fetch all users' names from the database.
+SELECT id, username, first_name 
+FROM Users;
+
+-- 2) Fetch all tweets of a user by user id, most recent tweets first.
+SELECT tweets_id, user_id, created_at
+FROM Tweets
+WHERE user_id = 1
+ORDER BY created_at DESC;
+
+-- 3) Fetch like count of a particular tweet by tweet id.
+SELECT tweet_id, COUNT(user_id) AS total_like
+FROM Tweet_likes 
+WHERE tweet_id = 1
+GROUP BY tweet_id;
+
+-- 4) Fetch retweet count of a particular tweet by tweet id.
+SELECT COUNT(*) AS retweet_count
+FROM retweets 
+WHERE retweet_id = 2;
+
+-- 5) Fetch comment count of a particular tweet by tweet id.
+SELECT COUNT(*) AS comment_count 
+FROM tweets 
+WHERE comment_on_tweet = 1;
+
+-- 6) Fetch all users' names who have retweeted a particular tweet by tweet id.
+SELECT Users.first_name
+FROM users 
+INNER JOIN retweets ON users.id = retweets.user_id
+WHERE retweets.original_tweet_id = 2;
+
+-- 7) Fetch all commented tweet’s content for a particular tweet by tweet id.
+SELECT tweet_content
+FROM tweets
+WHERE comment_on_tweet = 1;
+
+-- 8) Fetch a user’s timeline (All tweets from users whom I am following with tweet content and user name who has tweeted it)
+SELECT t.tweet_content, u.first_name 
+FROM tweets AS t
+INNER JOIN users AS u ON t.user_id = u.id
+INNER JOIN followers AS f ON u.id = f.followed_id
+WHERE f.follower_id = 1
+ORDER BY t.created_at DESC;
